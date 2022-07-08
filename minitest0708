@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+　　  <style>
+      html {
+        font-family: "Yu Gothic", YuGothic, Verdana, 'Hiragino Kaku Gothic ProN','Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, sans-serif;
+        line-height: 1.7;
+        letter-spacing: 1px;
+        margin-bottom: 10px;
+        width: 100%;
+        text-align:center;
+      }
+        
+      h1 {
+        text-align:center;
+        width: 100%;
+        font-size: 65px;
+      }
+        
+      h2 {
+        text-align:center;
+        width: 100%;
+        font-size: 50px;
+        margin: 0px 0px 41px 0px;
+      }
+        
+      p {
+        text-align:center;
+        margin: 40px 0px;
+        width: 100%;
+        font-size: 30px;
+      }
+        
+      img {
+        margin: 0px;
+        width: 100%;
+      }
+        
+      .btn {
+        display: inline-block;
+        width: 40%;
+        border: 5px solid #C23685;
+        font-size: 35px;
+        color: #C23685;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 16px;
+        border-radius: 10px;
+        transition: .4s;
+        margin-bottom: 20px;
+        background-color: #FFFFFF;
+      }
+  
+      .btn:hover {
+        background-color: #C23685;
+        border-color: #C23685;
+        color: #FFF;
+      }
+        
+      .flex {
+        margin-bottom: 10px;
+        width: 100%;
+        text-align:center;
+      }
+        
+      .profile {
+        border-radius: 50%;
+        width: 64px;
+        height: 64px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>LIFFテストページ</h1>
+    <p>LIFFの作成を色々と試すためのページです。</p>
+  </body>
+</html>
