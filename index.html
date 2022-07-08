@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
   <head>
-　　  <style>
+    <title>liff test</title>
+    <style>
       html {
         font-family: "Yu Gothic", YuGothic, Verdana, 'Hiragino Kaku Gothic ProN','Hiragino Kaku Gothic Pro', 'ヒラギノ角ゴ Pro W3', 'メイリオ', Meiryo, sans-serif;
         line-height: 1.7;
@@ -10,32 +11,32 @@
         width: 100%;
         text-align:center;
       }
-        
+       
       h1 {
         text-align:center;
         width: 100%;
         font-size: 65px;
       }
-        
+       
       h2 {
         text-align:center;
         width: 100%;
         font-size: 50px;
         margin: 0px 0px 41px 0px;
       }
-        
+       
       p {
         text-align:center;
         margin: 40px 0px;
         width: 100%;
         font-size: 30px;
       }
-        
+       
       img {
         margin: 0px;
         width: 100%;
       }
-        
+       
       .btn {
         display: inline-block;
         width: 40%;
@@ -50,28 +51,198 @@
         margin-bottom: 20px;
         background-color: #FFFFFF;
       }
-  
+ 
       .btn:hover {
         background-color: #C23685;
         border-color: #C23685;
         color: #FFF;
       }
-        
+       
       .flex {
         margin-bottom: 10px;
         width: 100%;
         text-align:center;
       }
-        
+       
       .profile {
         border-radius: 50%;
         width: 64px;
         height: 64px;
       }
     </style>
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   </head>
   <body>
     <h1>LIFFテストページ</h1>
+    <img id="profile_img" class="profile" src=""/>
+    <h2 id="profile_name"></h2>
     <p>LIFFの作成を色々と試すためのページです。</p>
+    <button class="btn" id="shareFriends">share to friends</button><br>
+    <button class="btn" id="closeWindowButton">close</button>
   </body>
+   
+  <script>
+    const liffId = "〇〇"
+    const Name = document.getElementById('profile_name');
+    const Img = document.getElementById("profile_img");
+ 
+    liff.init({liffId}).then(() => {
+      if (liff.isLoggedIn()) {
+        liff.getProfile()
+          .then(profile => {
+            const name = profile.displayName;
+            const pic = profile.pictureUrl;
+            Name.innerHTML = name;
+            Img.src = pic;
+          })
+          .catch((err) => {
+            console.log('error', err);
+          });
+      }
+      else{
+        liff.login();
+      }
+    })
+     
+    function closeWindow() {
+      if (!liff.isInClient()) {
+          sendAlertIfNotInClient();
+      } else {
+          liff.closeWindow();
+      }
+    }
+     
+    function shareFriends() {
+      console.log("shareFriends came");
+      if (liff.isApiAvailable("shareTargetPicker")) {
+        liff
+          .shareTargetPicker(
+            [{
+            "type": "flex",
+            "altText": "LIFFがシェアされました。",
+            "contents": {
+            "type": "bubble",
+            "body": {
+              "type": "box",
+              "layout": "vertical",
+              "contents": [
+                {
+                  "type": "text",
+                  "text": "LIFF test",
+                  "weight": "bold",
+                  "size": "xl"
+                },
+                {
+                  "type": "box",
+                  "layout": "vertical",
+                  "margin": "lg",
+                  "spacing": "sm",
+                  "contents": [
+                    {
+                      "type": "box",
+                      "layout": "baseline",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": "作成者",
+                          "color": "#aaaaaa",
+                          "size": "sm",
+                          "flex": 1
+                        },
+                        {
+                          "type": "text",
+                          "text": "みなこ さたけ",
+                          "wrap": true,
+                          "color": "#666666",
+                          "size": "sm",
+                          "flex": 5
+                        }
+                      ]
+                    },
+                    {
+                      "type": "box",
+                      "layout": "baseline",
+                      "spacing": "sm",
+                      "contents": [
+                        {
+                          "type": "text",
+                          "text": "目的",
+                          "color": "#aaaaaa",
+                          "size": "sm",
+                          "flex": 1
+                        },
+                        {
+                          "type": "text",
+                          "text": "LIFFをテストしてみること",
+                          "wrap": true,
+                          "color": "#666666",
+                          "size": "sm",
+                          "flex": 5
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            },
+            "footer": {
+              "type": "box",
+              "layout": "vertical",
+              "spacing": "sm",
+              "contents": [
+                {
+                  "type": "button",
+                  "style": "link",
+                  "height": "sm",
+                  "action": {
+                    "type": "uri",
+                    "label": "開く",
+                    "uri": "https://liff.line.me/1657263488-jeBb36Yq"
+                  }
+                },
+                {
+                  "type": "spacer",
+                  "size": "sm"
+                }
+              ],
+              "flex": 0
+            }
+          }
+          }],
+            {
+              isMultiple: true,
+            }
+          )
+          .then(function (res) {
+            if (res) {
+              // succeeded in sending a message through TargetPicker
+              console.log(`[${res.status}] Message sent!`);
+            } else {
+              const [majorVer, minorVer] = (liff.getLineVersion() || "").split(".");
+              if (parseInt(majorVer) == 10 && parseInt(minorVer) < 11) {
+                // LINE 10.3.0 - 10.10.0
+                // Old LINE will access here regardless of user's action
+                console.log(
+                  "TargetPicker was opened at least. Whether succeeded to send message is unclear"
+                );
+              } else {
+                // LINE 10.11.0 -
+                // sending message canceled
+                console.log("TargetPicker was closed!");
+              }
+            }
+          })
+          .catch(function (error) {
+            // something went wrong before sending a message
+            console.log("something wrong happen");
+          });
+      }
+    }
+     
+    document.querySelector("#shareFriends").addEventListener("click", shareFriends)
+    document.getElementById('closeWindowButton').addEventListener('click', closeWindow)
+     
+  </script>
+   
 </html>
